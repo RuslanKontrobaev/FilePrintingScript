@@ -1,0 +1,49 @@
+#!/bin/bash
+#parametr1 = [0..99] - количество раз печати
+#parametr2 = [0..1] - значение 0 соответствует печати содержимого файла на экране, значение 1 - в файл
+
+if [ ! -n "$1" ]; then
+		echo -n "1-й параметр не введён! Введите: "
+		read parametr1
+else
+		parametr1=$1
+fi
+while [ $parametr1 -lt 1 ] || [ $parametr1 -gt 99 ]; do
+		echo -n "1-й параметр должен принадлежать промежутку [1..99]! Введите корректное значение: "
+		read parametr1				
+done
+
+if [ ! -n "$2" ]; then
+		echo -n "2-й параметр не введён! Введите: "
+		read parametr2
+else
+		parametr2=$2
+fi
+while [ $parametr2 -lt 0 ] || [ $parametr2 -gt 1 ]; do
+		echo -n "2-й параметр должен принадлежать промежутку [0..1]! Введите корректное значение: "
+		read parametr2
+done
+
+while [ ! -n "$file_source" ]; do
+		echo -n "Введите название файла источника: "
+		read file_source
+done
+
+if [ $parametr2 -eq 1 ]; then
+		while [ ! -n "$file_dest" ]; do
+				echo -n "Введите название файла приёмника: "
+				read file_dest
+		done
+fi
+
+echo "Вы запустили скрипт с именем \"$0\" и параметрами: $parametr1, $parametr2"
+for ((i=0; i<$parametr1;i++)); do
+		if [ $parametr2 -eq 1 ]; then
+				cat "$file_source" >> "$file_dest"
+		else
+				echo "Содержимое файла \"$file_source\":"
+				cat "$file_source"
+		fi
+done
+echo "Запись прошла успешно!"
+exit 0
